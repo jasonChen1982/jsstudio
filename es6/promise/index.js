@@ -43,3 +43,37 @@ function run (generator) {
 }
 
 run(g);
+
+// 循环 Promise
+const aa = new Promise((res, rej)=>{
+  setTimeout(res,10000);
+});
+let bb = false;
+let cc = false;
+aa.then(_=>{
+  console.log('>>>>>> aaaaaa <<<<<<');
+  return new Promise((res, rej)=>{
+    function check() {
+      if (!bb) {
+        setTimeout(check, 500);
+      } else {
+        res();
+      }
+    }
+    check();
+  });
+}).then(_=>{
+  console.log('>>>>>> bbbbbb <<<<<<');
+  return new Promise((res, rej)=>{
+    function check() {
+      if (!cc) {
+        setTimeout(check, 500);
+      } else {
+        res();
+      }
+    }
+    check();
+  });
+}).then(_=>{
+  console.log('>>>>>> cccccc <<<<<<');
+});
